@@ -46,7 +46,17 @@ fn main() {
     let other_bank = bank;
 
     // error[E0382]: use of moved value: `bank`
-    //  ^^^^ value used here after move
     print_bank(bank);
+           //  ^^^^ value used here after move
+
+
+    let account = Account::new(1, String::from("me")); 
+
+    // error[E0382]: use of moved value: `account`
+    print_account(account);
+               // ^^^^^^^ this parameter takes ownership of the value
+   
+    print_account(account);
+              //  ^^^^^^^ value used here after move
 
 }
