@@ -39,9 +39,14 @@ fn print_account(account: Account) {
     println!("{:#?}", account);
 }
 fn main() {
-    let bank = Bank::new();
+    let bank = Bank::new();  
+
+    // NOTE: value in bank has been moved to other_bank
+    // warning: unused variable: `other_bank`
+    let other_bank = bank;
+
+    // error[E0382]: use of moved value: `bank`
+    //  ^^^^ value used here after move
     print_bank(bank);
 
-    let account = Account::new(1, String::from("Casey"));
-    print_account(account);
 }
