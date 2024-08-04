@@ -39,29 +39,28 @@ fn print_account(account: Account) {
     println!("{:#?}", account);
 }
 fn main() {
+    //////////////////////////////////////////////////////////////////
+    // Scenario #1:
+    /////////////////////////////////////////////////////////////////
     //let bank = Bank::new();  
+    //let other_bank = bank;  // ---- value moved here
+    //println!("{:#?}", bank); // error[E0382]: borrow of moved value: `bank`
+    //                ^^^^ value borrowed here after move
 
-    // NOTE: value in bank has been moved to other_bank
-    // warning: unused variable: `other_bank`
-    //let other_bank = bank;
-
-    // error[E0382]: use of moved value: `bank`
-    //print_bank(bank);
-           //  ^^^^ value used here after move
-
-
+    //////////////////////////////////////////////////////////////////
+    // Scenario #2:
+    /////////////////////////////////////////////////////////////////
+    //let account = Account::new(1, String::from("me")); 
+    //print_account(account); // ------- value moved here
+    //print_account(account); // error[E0382]: use of moved value: `account`
+    //            ^^^^^^^ value used here after move
+ 
+     //////////////////////////////////////////////////////////////////
+    // Scenario #3:
+    /////////////////////////////////////////////////////////////////
     let account = Account::new(1, String::from("me")); 
-
-    // error[E0382]: use of moved value: `account`
-    //print_account(account);
-               // ^^^^^^^ this parameter takes ownership of the value
-   
-    //print_account(account);
-              //  ^^^^^^^ value used here after move
-
-    // error[E0382]: borrow of moved value: `account`
-    let list_of_accounts = vec![account];
-    println!("{:#?}", account);
-                   // ^^^^^^^ value borrowed here after move
+    let list_of_accounts = vec![account]; // ------- value moved here
+    println!("{:#?}", account); // error[E0382]: borrow of moved value: `account`
+    //                ^^^^^^^ value borrowed here after move
 
 }
