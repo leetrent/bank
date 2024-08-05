@@ -71,4 +71,12 @@ fn main() {
     //println!("{:#?}", bank.accounts); // error[E0382]: borrow of moved value: `bank.accounts`
     //                ^^^^^^^^^^^^^ value borrowed here after move
 
+    //////////////////////////////////////////////////////////////////
+    // Scenario #5:
+    /////////////////////////////////////////////////////////////////
+    //let account = Account::new(1, String::from("me"));
+    //print_account(account); // ------- value moved here
+    println!("{}", account.holder); // error[E0382]: borrow of moved value: `account`
+    //             ^^^^^^^^^^^^^^ value borrowed here after move
+
 }
