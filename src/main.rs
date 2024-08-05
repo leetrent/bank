@@ -38,6 +38,11 @@ fn print_bank(bank: Bank) {
 fn print_account(account: Account) {
     println!("{:#?}", account);
 }
+
+fn print_holder(holder: String) {
+    println!("{}", holder);
+}
+
 fn main() {
     //////////////////////////////////////////////////////////////////
     // Scenario #1:
@@ -76,7 +81,15 @@ fn main() {
     /////////////////////////////////////////////////////////////////
     //let account = Account::new(1, String::from("me"));
     //print_account(account); // ------- value moved here
-    println!("{}", account.holder); // error[E0382]: borrow of moved value: `account`
+    //println!("{}", account.holder); // error[E0382]: borrow of moved value: `account`
     //             ^^^^^^^^^^^^^^ value borrowed here after move
+
+    //////////////////////////////////////////////////////////////////
+    // Scenario #6:
+    /////////////////////////////////////////////////////////////////
+    //let account = Account::new(1, String::from("me"));
+    //print_holder(account.holder); // -------------- value partially moved here
+    //print_account(account); // error[E0382]: use of partially moved value: `account`
+    //            ^^^^^^^ value used here after partial move
 
 }
