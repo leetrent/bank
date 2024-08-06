@@ -17,79 +17,26 @@ impl Account {
     }
 }
 
-#[derive(Debug)]
-struct Bank {
-    accounts: Vec<Account>,
-}
-
-// Inherent implementation block
-impl Bank {
-    // Associated function
-    fn new() -> Self {
-        // Implicit return (no 'return' statement and no semicolon at the end of the implicit return statement)
-        Bank { accounts: vec![] /*empty vector*/ }
-    }
-}
-
-fn print_bank(bank: Bank) {
-    println!("{:#?}", bank);
-}
-
-fn print_account(account: Account) {
+// This function takes ownership of the account value
+// and returns the account value
+fn print_account(account: Account) -> Account {
     println!("{:#?}", account);
+    account
 }
 
-fn print_holder(holder: String) {
-    println!("{}", holder);
-}
+
 
 fn main() {
-    //////////////////////////////////////////////////////////////////
-    // Scenario #1:
-    /////////////////////////////////////////////////////////////////
-    //let bank = Bank::new();  
-    //let other_bank = bank;  // ---- value moved here
-    //println!("{:#?}", bank); // error[E0382]: borrow of moved value: `bank`
-    //                ^^^^ value borrowed here after move
+    // account needs to be mutable so it can be reassigned
+    let mut account = Account::new(1, String::from("me"));
 
-    //////////////////////////////////////////////////////////////////
-    // Scenario #2:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me")); 
-    //print_account(account); // ------- value moved here
-    //print_account(account); // error[E0382]: use of moved value: `account`
-    //            ^^^^^^^ value used here after move
- 
-    //////////////////////////////////////////////////////////////////
-    // Scenario #3:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me")); 
-    //let list_of_accounts = vec![account]; // ------- value moved here
-    //println!("{:#?}", account); // error[E0382]: borrow of moved value: `account`
-    //                ^^^^^^^ value borrowed here after move
+    // Gives ownership back to account
+    account = print_account(account);
 
-    //////////////////////////////////////////////////////////////////
-    // Scenario #4:
-    /////////////////////////////////////////////////////////////////
-    //let bank = Bank::new();
-    //let accounts = bank.accounts; // ------------- value moved here
-    //println!("{:#?}", bank.accounts); // error[E0382]: borrow of moved value: `bank.accounts`
-    //                ^^^^^^^^^^^^^ value borrowed here after move
+    // Gives ownership back to account
+    account = print_account(account);
 
-    //////////////////////////////////////////////////////////////////
-    // Scenario #5:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_account(account); // ------- value moved here
-    //println!("{}", account.holder); // error[E0382]: borrow of moved value: `account`
-    //             ^^^^^^^^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #6:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_holder(account.holder); // -------------- value partially moved here
-    //print_account(account); // error[E0382]: use of partially moved value: `account`
-    //            ^^^^^^^ value used here after partial move
-
+    // Everything works fine
+    // account will be printed for the 3rd time
+    println!("{:#?}", account);
 }
