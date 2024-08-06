@@ -5,13 +5,11 @@ struct Account {
     holder: String,
 }
 
-// Inherent implementation block
 impl Account {
-    // Associated function
     fn new(id: u32, holder: String) -> Self {
         Account {
-            id, // no assignment is necessary because field name and parameter name are identical
-            holder, // no assignment is necessary because field name and parameter name are identical
+            id,
+            holder,
             balance: 0,
         }
     }
@@ -22,12 +20,9 @@ struct Bank {
     accounts: Vec<Account>,
 }
 
-// Inherent implementation block
 impl Bank {
-    // Associated function
     fn new() -> Self {
-        // Implicit return (no 'return' statement and no semicolon at the end of the implicit return statement)
-        Bank { accounts: vec![] /*empty vector*/ }
+        Bank { accounts: vec![] }
     }
 }
 
@@ -35,61 +30,32 @@ fn print_bank(bank: Bank) {
     println!("{:#?}", bank);
 }
 
-fn print_account(account: Account) {
-    println!("{:#?}", account);
+fn print_accounts(accounts: Vec<Account>) {
+    println!("{:#?}", accounts)
 }
 
-fn print_holder(holder: String) {
-    println!("{}", holder);
-}
+
 
 fn main() {
-    //////////////////////////////////////////////////////////////////
-    // Scenario #1:
-    /////////////////////////////////////////////////////////////////
-    //let bank = Bank::new();  
-    //let other_bank = bank;  // ---- value moved here
-    //println!("{:#?}", bank); // error[E0382]: borrow of moved value: `bank`
-    //                ^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #2:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me")); 
-    //print_account(account); // ------- value moved here
-    //print_account(account); // error[E0382]: use of moved value: `account`
-    //            ^^^^^^^ value used here after move
- 
-    //////////////////////////////////////////////////////////////////
-    // Scenario #3:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me")); 
-    //let list_of_accounts = vec![account]; // ------- value moved here
-    //println!("{:#?}", account); // error[E0382]: borrow of moved value: `account`
-    //                ^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #4:
-    /////////////////////////////////////////////////////////////////
-    //let bank = Bank::new();
-    //let accounts = bank.accounts; // ------------- value moved here
-    //println!("{:#?}", bank.accounts); // error[E0382]: borrow of moved value: `bank.accounts`
-    //                ^^^^^^^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #5:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_account(account); // ------- value moved here
-    //println!("{}", account.holder); // error[E0382]: borrow of moved value: `account`
-    //             ^^^^^^^^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #6:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_holder(account.holder); // -------------- value partially moved here
-    //print_account(account); // error[E0382]: use of partially moved value: `account`
-    //            ^^^^^^^ value used here after partial move
-
+    let bank = Bank::new();
+    
+    // TODO: Write and call a function that will *take ownership* of 
+    // the Banks's "accounts" field, print it, and return nothing
+    print_accounts(bank.accounts);
+    
+    // Once you've finished the to-do, uncomment the 'print_bank' call below
+    // When your function + print_bank run, do you think you'll end up getting
+    // an error?
+    // If so, what error do you think you'd see?
+    // YES: error[E0382]: use of partially moved value: `bank`
+    
+    // UNCOMMENT THIS:
+    print_bank(bank);
 }
+
+
+
+
+
+
+
