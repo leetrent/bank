@@ -35,7 +35,7 @@ fn print_bank(bank: Bank) {
     println!("{:#?}", bank);
 }
 
-fn print_account(account: Account) {
+fn print_account(account: &Account) {
     println!("{:#?}", account);
 }
 
@@ -47,10 +47,11 @@ fn main() {
     //////////////////////////////////////////////////////////////////
     // Scenario #1:
     /////////////////////////////////////////////////////////////////
-    //let bank = Bank::new();  
-    //let other_bank = bank;  // ---- value moved here
-    //println!("{:#?}", bank); // error[E0382]: borrow of moved value: `bank`
-    //                ^^^^ value borrowed here after move
+    let account = Account::new(1, String::from("me"));
+    let account_ref = &account;
+
+    print_account(account_ref);
+    println!("{:#?}", account);
 
     //////////////////////////////////////////////////////////////////
     // Scenario #2:
