@@ -43,62 +43,77 @@ fn print_holder(holder: String) {
     println!("{}", holder);
 }
 
+fn change_account(account: &mut Account) {
+    println!("Old balance: {:#?}", account.balance);
+    account.balance = 10;
+    println!("New balance: {:#?}", account.balance);
+}
+
+
+
 fn main() {
-    //////////////////////////////////////////////////////////////////
-    // Scenario #1:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    let account_ref = &account;
+    /////////////////////////////////////////////////////////////////////////
+    // HAPPY PATH
+    /////////////////////////////////////////////////////////////////////////
+    // let mut account = Account::new(1, String::from("me"));
+    // change_account(&mut account);
+    // println!("{:#?}", account);
 
-    print_account(account_ref);
+    /////////////////////////////////////////////////////////////////////////
+    // Will NOT COMPILE
+    /////////////////////////////////////////////////////////////////////////
+    // let mut account = Account::new(1, String::from("me"));
+    // let account_ref = &account;
+
+    // change_account(&mut account); // error[E0502]: cannot borrow `account` as mutable because it is also borrowed as immutable
+    // //             ^^^^^^^^^^^^ mutable borrow occurs here
+
+    // println!("{:#?}", account_ref.holder);
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Will NOT COMPILE
+    // No read-only references can be in use while there is a mutable reference
+    ///////////////////////////////////////////////////////////////////////////
+    // let mut account = Account::new(1, String::from("me"));
+    // let account_ref = &account;
+
+    //change_account(&mut account); // error[E0502]: cannot borrow `account` as mutable because it is also borrowed as immutable
+    //             ^^^^^^^^^^^^ mutable borrow occurs here
+
+    //println!("{:#?}", account_ref.holder);
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Will NOT COMPILE
+    // Only onw mutable reference at a time is allowed
+    ///////////////////////////////////////////////////////////////////////////
+    // let mut account = Account::new(1, String::from("me"));
+    // let account_ref = &mut account;
+
+    // change_account(&mut account); // error[E0499]: cannot borrow `account` as mutable more than once at a time
+    // //             ^^^^^^^^^^^^ second mutable borrow occurs here
+
+
+    //println!("{:#?}", account_ref.holder);
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Will COMPILE
+    ///////////////////////////////////////////////////////////////////////////
+    // let mut account = Account::new(1, String::from("me"));
+    // println!("{:#?}", account);
+    // account.balance = 100;
+    // println!("{:#?}", account);
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Will NOT COMPILE
+    // Mutating the value through the owner is not allowed when any references
+    // (mutable of immutable) to the value exist.
+    ///////////////////////////////////////////////////////////////////////////
+    let mut account = Account::new(1, String::from("me"));
+    let account_ref = &mut account;
+
+    account.balance = 100;  // error[E0506]: cannot assign to `account.balance` because it is borrowed
+//  ^^^^^^^^^^^^^^^^^^^^^ `account.balance` is assigned to here but it was already borrowed
+    change_account(account_ref);
     println!("{:#?}", account);
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #2:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    print_account(&account_ref);
-    println!("{:#?}", account);
- 
-    //////////////////////////////////////////////////////////////////
-    // Scenario #3:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    let account_ref_1 = &account;
-    let account_ref_2 = &account;
-
-    print_account(account_ref_1);
-    print_account(account_ref_2);
-    println!("{:#?}", account);
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #4:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    let account_ref_1 = &account;
-    let account_ref_2 = &account;
-    let other_account = account; // error[E0505]: cannot move out of `account` because it is borrowed
-    //                           ^^^^^^^ move out of `account` occurs here
-
-    print_account(account_ref_1);
-    print_account(account_ref_2);
-    println!("{:#?}", account); // error[E0382]: borrow of moved value: `account`
-    //                ^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #5:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_account(account); // ------- value moved here
-    //println!("{}", account.holder); // error[E0382]: borrow of moved value: `account`
-    //             ^^^^^^^^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #6:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_holder(account.holder); // -------------- value partially moved here
-    //print_account(account); // error[E0382]: use of partially moved value: `account`
-    //            ^^^^^^^ value used here after partial move
 
 }
