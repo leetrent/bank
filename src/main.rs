@@ -5,13 +5,11 @@ struct Account {
     holder: String,
 }
 
-// Inherent implementation block
 impl Account {
-    // Associated function
     fn new(id: u32, holder: String) -> Self {
         Account {
-            id, // no assignment is necessary because field name and parameter name are identical
-            holder, // no assignment is necessary because field name and parameter name are identical
+            id,
+            holder,
             balance: 0,
         }
     }
@@ -22,83 +20,43 @@ struct Bank {
     accounts: Vec<Account>,
 }
 
-// Inherent implementation block
 impl Bank {
-    // Associated function
     fn new() -> Self {
-        // Implicit return (no 'return' statement and no semicolon at the end of the implicit return statement)
-        Bank { accounts: vec![] /*empty vector*/ }
+        Bank { accounts: vec![] }
     }
 }
 
-fn print_bank(bank: Bank) {
-    println!("{:#?}", bank);
-}
+// TODO: Create a new function called 'print_num_accounts'
+// It should take in a Bank as an argument, then print out the number
+// of accounts stored in the 'bank.accounts' vector
+// To get the number of elements in a vector, you can use the '.len()'
+// method like this: 'bank.accounts.len()'
 
-fn print_account(account: &Account) {
-    println!("{:#?}", account);
-}
-
-fn print_holder(holder: String) {
-    println!("{}", holder);
+fn print_num_accounts(bank: &Bank) {
+    println!("Number of bank accounts: {:#?}", bank.accounts.len());
 }
 
 fn main() {
-    //////////////////////////////////////////////////////////////////
-    // Scenario #1:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    let account_ref = &account;
-
-    print_account(account_ref);
-    println!("{:#?}", account);
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #2:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    print_account(&account_ref);
-    println!("{:#?}", account);
- 
-    //////////////////////////////////////////////////////////////////
-    // Scenario #3:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    let account_ref_1 = &account;
-    let account_ref_2 = &account;
-
-    print_account(account_ref_1);
-    print_account(account_ref_2);
-    println!("{:#?}", account);
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #4:
-    /////////////////////////////////////////////////////////////////
-    let account = Account::new(1, String::from("me"));
-    let account_ref_1 = &account;
-    let account_ref_2 = &account;
-    let other_account = account; // error[E0505]: cannot move out of `account` because it is borrowed
-    //                           ^^^^^^^ move out of `account` occurs here
-
-    print_account(account_ref_1);
-    print_account(account_ref_2);
-    println!("{:#?}", account); // error[E0382]: borrow of moved value: `account`
-    //                ^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #5:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_account(account); // ------- value moved here
-    //println!("{}", account.holder); // error[E0382]: borrow of moved value: `account`
-    //             ^^^^^^^^^^^^^^ value borrowed here after move
-
-    //////////////////////////////////////////////////////////////////
-    // Scenario #6:
-    /////////////////////////////////////////////////////////////////
-    //let account = Account::new(1, String::from("me"));
-    //print_holder(account.holder); // -------------- value partially moved here
-    //print_account(account); // error[E0382]: use of partially moved value: `account`
-    //            ^^^^^^^ value used here after partial move
-
+    let mut bank = Bank::new();
+    let account1 = Account::new(1, String::from("me"));
+    let account2 = Account::new(1, String::from("me too"));
+    
+    bank.accounts.push(account1);
+    bank.accounts.push(account2);
+    
+    // TODO: call 'print_num_accounts' here:
+    print_num_accounts(&bank);
+    
+    
+    // Notice the existing println statement here! 'main' needs to use the
+    // 'bank' value in two locations, so we probably shouldn't move the 
+    // 'bank' value.
+    println!("{:#?}", bank);
 }
+
+
+
+
+
+
+
