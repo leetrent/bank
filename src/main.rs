@@ -29,19 +29,19 @@ impl Bank {
         // Implicit return (no 'return' statement and no semicolon at the end of the implicit return statement)
         Bank { accounts: vec![] /*empty vector*/ }
     }
+
+    // Method
+    fn add_account(&mut self, account: Account) {
+        self.accounts.push(account);
+
+    }
 }
 
-fn print_bank(bank: Bank) {
-    println!("{:#?}", bank);
-}
-
-fn print_account(account: Account) {
-    println!("{:#?}", account);
-}
 fn main() {
-    let bank = Bank::new();
-    print_bank(bank);
-
+    let mut bank = Bank::new();
     let account = Account::new(1, String::from("Casey"));
-    print_account(account);
+   
+    bank.add_account(account);
+
+    println!("{:#?}", bank)
 }
