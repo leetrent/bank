@@ -49,18 +49,43 @@ impl Bank {
         self.accounts.push(account);
 
     }
+
+    // Method
+    fn total_balance(&self) -> i32 {
+        self.accounts.iter().map(|account| account.balance).sum()
+    }
+
+    // Method
+    fn summary(&self) -> Vec<String> {
+        self.accounts
+            .iter()
+            .map(|account| account.summary())
+            .collect::<Vec<String>>()
+    }
 }
 
 fn main() {
     let mut bank = Bank::new();
-    let mut account = Account::new(1, String::from("Casey"));
-   
-    account.deposit(500);
-    account.withdraw(250);
 
-    println!("{}", account.summary());
+    //////////////////////////////////////////////////////////////////////////////////
+    // Casey's account
+    //////////////////////////////////////////////////////////////////////////////////
+    let mut account_casey = Account::new(1, String::from("Casey"));  
+    account_casey.deposit(1000);
+    account_casey.withdraw(250);
+    bank.add_account(account_casey);
 
-    bank.add_account(account);
+    //////////////////////////////////////////////////////////////////////////////////
+    // Pooh's account
+    //////////////////////////////////////////////////////////////////////////////////
+    let mut account_pooh = Account::new(1, String::from("Pooh Bear"));  
+    account_pooh.deposit(500);
+    account_pooh.withdraw(250);
+    bank.add_account(account_pooh);
 
-    println!("{:#?}", bank);
+    //////////////////////////////////////////////////////////////////////////////////
+    // Bank summary of accounts
+    //////////////////////////////////////////////////////////////////////////////////
+    println!("{:#?}", bank.summary());
+    println!("Total of all account balances: {}", bank.total_balance());
 }
